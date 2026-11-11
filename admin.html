@@ -412,7 +412,7 @@
       loginSection.style.display = 'none';
       errorMsg.style.display = 'none';
       studioPanel.style.display = 'block';
-      subText.textContent = 'Chọn mục và tải tranh lên — Tự động đồng bộ trên mọi thiết bị ♡';
+      subText.textContent = 'Chọn mục e thích và tải tranh lên  nha  ♡';
 
       // Chỉ khởi tạo Cloudinary Widget sau khi đã mở khóa
       if (!myWidget) {
@@ -434,7 +434,7 @@
             renderAdminGrid();
 
             statusMsg.style.display = 'block';
-            statusMsg.textContent = '✨ Đã tải ảnh lên thành công! Chờ 15-30s để đồng bộ sang các máy khác nhé ♡';
+            statusMsg.textContent = '✨ Đã tải ảnh lên thành công! Chờ 15-30s nha vợ  ♡';
           }
         });
       }
@@ -461,7 +461,7 @@
       try {
         const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json?_t=${Date.now()}`);
         if (!res.ok) {
-          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trên Cloudinary (Hãy tải lên bức tranh đầu tiên nhé!) ♡</div>';
+          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào dc chọn aaaa ♡</div>';
           return;
         }
         const data = await res.json();
@@ -477,7 +477,7 @@
           renderAdminGrid();
         }
       } catch (err) {
-        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào được tải lên ♡</div>';
+        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào được tải lên nìiiii :Đ</div>';
       }
     }
 
@@ -488,7 +488,7 @@
         : allArts.filter(a => a.category === currentFilter);
 
       if (filtered.length === 0) {
-        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trong mục này ♡</div>';
+        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trong mục này :v</div>';
         return;
       }
 
