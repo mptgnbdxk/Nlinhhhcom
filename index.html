@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="NGLINHH.art — hello mng nhaaaaaaaa." />
+  <meta name="description" content="NGLINHH.art — Pastel Digital Art & Commission." />
   <title>NGLINHH.art — Commission</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="effects.css" />
 </head>
 
 <body>
@@ -33,12 +34,13 @@
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero" id="home">
       <div class="hero-copy">
         <div class="eyebrow"><span>✦</span> commissions open</div>
         <h1>WELCOME TO<br><em>my little world of art.</em></h1>
         <p>
-          Chào cậu ♡ Mình là <strong>NLINHH</strong>  một artist thích vẽ tranh chibi truyền thống (traditional art) và đang hoàn thiện thêm mảng digital. Cảm ơn cậu đã ghé thăm góc nhỏ của mình, mong được cậu ủng hộ nhé!
+          Chào cậu ♡ Mình là <strong>NLINHH</strong> — một artist thích vẽ tranh chibi truyền thống (traditional art) và đang hoàn thiện thêm mảng digital. Cảm ơn cậu đã ghé thăm góc nhỏ của mình, mong được cậu ủng hộ nhé!
         </p>
         <div class="hero-actions">
           <a href="#gallery" class="button primary">xem tranh <span>↓</span></a>
@@ -53,12 +55,12 @@
 
         <div class="portrait-card">
           <button class="hero-image-wrap" id="heroChibi" type="button" aria-label="Mở ảnh chibi">
-            
+            <img src="images/Head/2.jpg" alt="Chibi Portrait Sample" onerror="this.style.display='none'" />
           </button>
           <div class="portrait-caption">
             <div>
               <b>chibi portrait</b><br>
-              <span> special little version ♡</span>
+              <span>special little version ♡</span>
             </div>
             <span class="heart">♡</span>
           </div>
@@ -70,77 +72,75 @@
       </div>
     </section>
 
+    <!-- ABOUT ME -->
     <section class="intro section">
       <div class="section-kicker">01 · about the artist</div>
       <div class="intro-grid">
         <h2>Hi <em>I'm Nlinh</em></h2>
         <p>
-       Với mình, mỗi commission đều là một đứa con tinh thần được nâng niu từng nét vẽ.
-          Mình yêu thích phong cách màu pastel dịu nhẹ, nét mềm và biểu cảm tự nhiên mang dấu ấn riêng của
-          tiệm tranh nhỏ này ạ ♡
-         
+          Với mình, mỗi commission đều là một đứa con tinh thần được nâng niu từng nét vẽ. Mình yêu thích phong cách màu pastel dịu nhẹ, nét mềm và biểu cảm tự nhiên mang dấu ấn riêng của tiệm tranh nhỏ này ♡
         </p>
       </div>
     </section>
 
+    <!-- GALLERY -->
     <section class="gallery section" id="gallery">
       <div class="section-head">
         <div>
           <div class="section-kicker">02 · portfolio</div>
-          <h2>my little gallery/Thư viện nhỏ của tớ</h2>
+          <h2>my little gallery / Thư viện nhỏ của tớ</h2>
         </div>
         <p>Click vào ảnh để xem lớn hơn ♡</p>
+      </div>
+
+      <!-- Mục tranh mới cập nhật -->
+      <div class="gallery-block" id="recentUploadsBlock" style="display: none;">
+        <div class="gallery-title">
+          <span>✨ tranh mới cập nhật</span><b>new</b>
+        </div>
+        <div class="masonry grid-4 gallery-grid" id="recentUploadsGrid"></div>
       </div>
 
       <!-- Chibi Portrait -->
       <div class="gallery-block">
         <div class="gallery-title">
-          <span>chibi portrait</span><b>01</b>
+          <span>chibi portrait</span><b>chibi</b>
         </div>
-        <div class="masonry one gallery-grid">
-         
-        </div>
+        <div class="masonry one gallery-grid"></div>
       </div>
 
       <!-- Head Shots -->
       <div class="gallery-block">
-        <div class="gallery-title"><span>head shots</span><b>08</b></div>
-        <div class="masonry grid-4 gallery-grid">
-
-        </div>
+        <div class="gallery-title"><span>headshot / chân dung</span><b>cận mặt</b></div>
+        <div class="masonry grid-4 gallery-grid"></div>
       </div>
 
       <!-- Half Body -->
       <div class="gallery-block">
-        <div class="gallery-title"><span>half body</span><b>08</b></div>
-        <div class="masonry grid-4 gallery-grid">
-
-        </div>
+        <div class="gallery-title"><span>half body / nửa người</span><b>nửa người</b></div>
+        <div class="masonry grid-4 gallery-grid"></div>
       </div>
 
       <!-- Full Body -->
       <div class="gallery-block">
-        <div class="gallery-title"><span>full body</span><b>16</b></div>
-        <div class="masonry grid-4 gallery-grid">
-
-        </div>
+        <div class="gallery-title"><span>full body / toàn thân</span><b>toàn thân</b></div>
+        <div class="masonry grid-4 gallery-grid"></div>
       </div>
 
       <!-- Couple -->
       <div class="gallery-block">
-        <div class="gallery-title"><span>couple</span><b>09</b></div>
-        <div class="masonry grid-3 gallery-grid">
-
-        </div>
+        <div class="gallery-title"><span>couple / tranh đôi</span><b>tranh đôi</b></div>
+        <div class="masonry grid-3 gallery-grid"></div>
       </div>
     </section>
 
+    <!-- PRICING -->
     <section class="price section" id="price">
       <div class="section-kicker">03 · price</div>
       <div class="price-layout">
         <div class="price-intro">
           <h2>pick your<br><em>little piece.</em></h2>
-          <p>Giá có thể thay đổi tùy độ phức tạp. Bạn cứ nhắn mình trước, mình sẽ báo giá cụ thể nhé:Đ ♡</p>
+          <p>Giá có thể thay đổi tùy độ phức tạp. Cậu cứ nhắn mình trước, mình sẽ báo giá cụ thể nhé ♡</p>
           <div class="price-stamp">♡<br><small>made with<br>love</small></div>
         </div>
 
@@ -148,7 +148,7 @@
           <article class="price-item">
             <span class="num">01</span>
             <div>
-              <h3>Head</h3>
+              <h3>Headshot</h3>
               <p>1 nhân vật · portrait</p>
             </div>
             <strong>60k</strong>
@@ -173,7 +173,7 @@
             <span class="num">04</span>
             <div>
               <h3>Chibi portrait</h3>
-              <p>chibi từ ảnh thật</p>
+              <p>Chibi từ ảnh thật</p>
             </div>
             <strong>130k</strong>
           </article>
@@ -188,32 +188,27 @@
         </div>
       </div>
     </section>
+
+    <!-- TOS BUTTON -->
     <div class="tos-button-wrap">
-
-      <a href="./tos.html" target="_blank" rel="noopener noreferrer" class="tos-button">
-
-        <span class="tos-icon">:3</span>
-
+      <a href="tos.html" target="_blank" rel="noopener noreferrer" class="tos-button">
+        <span class="tos-icon">✦</span>
         <span class="tos-button-text">
           <small>BEFORE ORDERING</small>
           Read my TOS
         </span>
-
         <span class="tos-arrow">↗</span>
-
       </a>
+    </div>
 
-    </div>
-    </a>
-    </div>
+    <!-- CONTACT -->
     <section class="contact" id="contact">
       <div class="contact-inner">
         <div>
           <span class="eyebrow">♡ commissions open</span>
-          <h2>Thanks you for watching<br><em>and have a nice day.</em></h2>
+          <h2>Thank you for watching<br><em>and have a nice day.</em></h2>
         </div>
-        <a class="contact-button" href="https://www.facebook.com/share/19JkC8BtgW/?mibextid=wwXIfr/" target="_blank"
-          rel="noopener noreferrer">
+        <a class="contact-button" href="https://www.facebook.com/share/19JkC8BtgW/?mibextid=wwXIfr/" target="_blank" rel="noopener noreferrer">
           nhắn mình <span>↗</span>
         </a>
       </div>
@@ -225,6 +220,7 @@
     <span>made softly with love</span>
   </footer>
 
+  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <button class="close" type="button" aria-label="Đóng">×</button>
     <div class="lightbox-content">
