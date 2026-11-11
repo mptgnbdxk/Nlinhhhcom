@@ -58,84 +58,107 @@ document.addEventListener("DOMContentLoaded", () => {
   attachLightboxEvents();
 
   /* ==========================================
-     2. LOAD TRANH CHUẨN THỨ TỰ TỪ TRÁI SANG PHẢI (#1 -> #2 -> #3)
+     2. LOAD TRANH ĐỒNG BỘ TRÊN MỌI THIẾT BỊ
   ========================================== */
   const categoryContainers = {
-    chibi: document.querySelector('#gallery .gallery-block:nth-of-type(2) .gallery-grid'),
-    head: document.querySelector('#gallery .gallery-block:nth-of-type(3) .gallery-grid'),
-    half: document.querySelector('#gallery .gallery-block:nth-of-type(4) .gallery-grid'),
-    full: document.querySelector('#gallery .gallery-block:nth-of-type(5) .gallery-grid'),
-    couple: document.querySelector('#gallery .gallery-block:nth-of-type(6) .gallery-grid')
+    chibi: document.querySelector('#gallery .gallery-block:nth-of-type(1) .gallery-grid, #gallery .gallery-block:nth-of-type(2) .gallery-grid'),
+    head: document.querySelector('#gallery .gallery-block:nth-of-type(2) .gallery-grid, #gallery .gallery-block:nth-of-type(3) .gallery-grid'),
+    half: document.querySelector('#gallery .gallery-block:nth-of-type(3) .gallery-grid, #gallery .gallery-block:nth-of-type(4) .gallery-grid'),
+    full: document.querySelector('#gallery .gallery-block:nth-of-type(4) .gallery-grid, #gallery .gallery-block:nth-of-type(5) .gallery-grid'),
+    couple: document.querySelector('#gallery .gallery-block:nth-of-type(5) .gallery-grid, #gallery .gallery-block:nth-of-type(6) .gallery-grid')
   };
 
-  const recentBlock = document.getElementById('recentUploadsBlock');
-  const recentGrid = document.getElementById('recentUploadsGrid');
-
   async function loadArtworks() {
+    // 1. Kiểm tra cache máy hiện tại
     const localData = JSON.parse(localStorage.getItem('nlinh_gallery_data') || '[]');
 
     if (localData.length > 0) {
-      // Phân nhóm tranh theo từng danh mục
-      const categories = ['chibi', 'head', 'half', 'full', 'couple'];
-      
-      categories.forEach(cat => {
-        const container = categoryContainers[cat];
-        if (!container) return;
-
-        // Lấy tất cả tranh của danh mục này (thứ tự: #1, #2, #3...)
-        const catArts = localData.filter(item => item.category === cat);
-
-        // Duyệt ngược từ cuối lên đầu và prepend()
-        // -> Ảnh #2 chèn trước, sau đó ảnh #1 chèn đè lên trước ảnh #2
-        // -> Kết quả từ trái qua phải sẽ là: [#1, #2, #3...] ở ngay đầu mục!
-        catArts.slice().reverse().forEach(item => {
-          const img = document.createElement('img');
-          img.src = item.url;
-          img.alt = `Commission ${cat}`;
-          img.loading = 'lazy';
-          container.prepend(img);
-        });
-      });
-
-      // Nếu có khối "Tranh mới cập nhật"
-      if (recentBlock && recentGrid) {
-        recentGrid.innerHTML = '';
-        localData.slice(0, 8).forEach((item, idx) => {
-          const img = document.createElement('img');
-          img.src = item.url;
-          img.alt = `Tranh mới ${idx + 1}`;
-          img.loading = 'lazy';
-          recentGrid.appendChild(img);
-        });
-        recentBlock.style.display = 'block';
-      }
-
-      attachLightboxEvents();
+      renderImages(localData);
     } else {
+      // 2. Nếu ở thiết bị khác (điện thoại), kéo trực tiếp toàn bộ ảnh từ Cloudinary
       try {
         const listUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json`;
         const res = await fetch(listUrl);
         if (res.ok) {
           const data = await res.json();
-          if (data && data.resources && data.resources.length > 0 && recentBlock && recentGrid) {
-            recentGrid.innerHTML = '';
-            data.resources.slice(0, 8).forEach((r, idx) => {
-              const img = document.createElement('img');
-              img.src = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto,f_auto/${r.public_id}.${r.format}`;
-              img.alt = `Tranh mới ${idx + 1}`;
-              img.loading = 'lazy';
-              recentGrid.appendChild(img);
+          if (data && data.resources && data.resources.length > 0) {
+            // Chuẩn hóa dữ liệu theo format web
+            const cloudArts = data.resources.map(r => {
+              // Tìm category từ tags (ví dụ: chibi, head, half...)
+              const catTag = (r.context && r.context.custom && r.context.custom.category) || 'chibi';
+              return {
+                id: r.public_id,
+                url: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto/${r.public_id}.${r.format}`,
+                category: catTag,
+                version: r.version
+              };
             });
-            recentBlock.style.display = 'block';
-            attachLightboxEvents();
+            renderImages(cloudArts);
           }
         }
-      } catch (e) {
-        console.log("Gallery ready");
+      } catch (err) {
+        console.log("Waiting for images sync...");
       }
     }
   }
 
+  function renderImages(artsList) {
+    const categories = ['chibi', 'head', 'half', 'full', 'couple'];
+    categories.forEach(cat => {
+      const catArts = artsList.filter(item => item.category === cat);
+      // Tìm đúng container theo class hoặc title
+      const blocks = document.querySelectorAll('#gallery .gallery-block');
+      let targetContainer = null;
+      blocks.forEach(b => {
+        const titleText = b.querySelector('.gallery-title')?.textContent.toLowerCase() || '';
+        if (titleText.includes(cat)) {
+          targetContainer = b.querySelector('.gallery-grid');
+        }
+      });
+
+      if (targetContainer) {
+        targetContainer.innerHTML = '';
+        // Duyệt theo thứ tự trái qua phải
+        catArts.forEach(item => {
+          const img = document.createElement('img');
+          img.src = item.url;
+          img.alt = `Commission ${cat}`;
+          img.loading = 'lazy';
+          targetContainer.appendChild(img);
+        });
+      }
+    });
+
+    attachLightboxEvents();
+  }
+
   loadArtworks();
 
-});
+  /* =========================================================
+     ✨ HIỆU ỨNG RÊ CHUỘT BỤI SAO (Tự tắt trên màn cảm ứng)
+  ========================================================= */
+  const sparkSymbols = ['✦', '✧', '♡', '⋆', '🌸'];
+  const sparkColors = ['#f6a5b9', '#d87093', '#ffcad4', '#e2a3c7', '#ffd6e0'];
+  let lastSparkTime = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkTime < 45) return;
+    lastSparkTime = now;
+
+    const span = document.createElement('span');
+    span.className = 'sparkle-trail';
+    span.textContent = sparkSymbols[Math.floor(Math.random() * sparkSymbols.length)];
+    span.style.left = `${e.clientX}px`;
+    span.style.top = `${e.clientY}px`;
+    span.style.color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+    span.style.fontSize = `${Math.floor(Math.random() * 8) + 11}px`;
+
+    document.body.appendChild(span);
+
+    setTimeout(() => {
+      span.remove();
+    }, 750);
+  });
+
+})
