@@ -117,7 +117,7 @@
       display: none;
     }
 
-    /* KHU VỰC QUẢN LÝ (ẨN KHI CHƯA LOGIN) */
+    /* KHU VỰC QUẢN LÝ */
     #studioPanel {
       display: none;
     }
@@ -264,10 +264,6 @@
 
     .links-footer {
       margin-top: 18px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      align-items: center;
     }
     .links-footer a {
       color: var(--sub);
@@ -285,20 +281,20 @@
   <div class="container">
     <div class="card">
       <div class="badge">🌸 artist studio</div>
-      <h1>Góc Quản Lý Tranh Của Nlinh</h1>
-      <p class="subtitle" id="subText">Vui lòng nhập mật khẩu để mở khóa phòng tranh ♡</p>
+      <h1>Góc Quản Lý Tranh Của embe Nlinh :></h1>
+      <p class="subtitle" id="subText">Vui lòng nhập mật khẩu để mở khóa óooo ♡</p>
 
-      <!-- MÀN HÌNH KHÓA MẬT KHẨU -->
+      <!-- MÀN HÌNH NHẬP MẬT KHẨU -->
       <div class="login-box" id="loginSection">
         <div class="input-wrapper">
-          <input type="password" id="pwInput" placeholder="Nhập mật khẩu bí mật..." autocomplete="off">
+          <input type="password" id="pwInput" placeholder="Nhập mật khẩu...đúng ko ta đúng ko ta" autocomplete="off">
           <button type="button" class="toggle-pw-btn" id="togglePwBtn" title="Hiện/Ẩn mật khẩu">👁️</button>
         </div>
-        <div class="error-msg" id="errorMsg">Mật khẩu chưa đúng rồi, thử lại nhé!</div>
-        <button type="button" class="btn-main" id="loginBtn">🔒 Mở khóa Studio</button>
+        <div class="error-msg" id="errorMsg">Mật khẩu chưa đúng rồi,babi thử lại nhé!</div>
+        <button type="button" class="btn-main" id="loginBtn">🔒 Mở khóa trái tim </button>
       </div>
 
-      <!-- GIAO DIỆN QUẢN LÝ (CHỈ HIỆN KHI ĐÚNG MẬT KHẨU) -->
+      <!-- GIAO DIỆN QUẢN LÝ -->
       <div id="studioPanel">
         <div class="upload-toolbar">
           <label for="categorySelect" style="font-weight: 700; font-size: 0.9rem;">Danh mục:</label>
@@ -325,25 +321,25 @@
         </div>
 
         <div class="grid" id="adminGrid">
-          <div class="empty-note">Đang tải danh sách tranh từ Cloudinary...</div>
+          <div class="empty-note">Đang tải danh sách tranh từ  đâu đó...</div>
         </div>
 
         <button type="button" class="btn-logout" id="logoutBtn">Đăng xuất khóa lại</button>
       </div>
 
       <div class="links-footer">
-        <a href="index.html">← Quay về trang chủ xem Gallery</a>
+        <a href="index.html">← Quay về trang chủ xem thử nè</a>
       </div>
     </div>
   </div>
 
   <script>
+    // ==========================================
+    // CÀI ĐẶT MẬT KHẨU & CLOUDINARY Ở ĐÂY
+    // ==========================================
+    const ADMIN_PASSWORD = 'nlinhdangiu2407'; // <-- Đổi mật khẩu chữ bình thường tại đây
     const CLOUD_NAME = 'o6quhhtx';
     const UPLOAD_PRESET = 'nlinh_art';
-
-    // Mã băm SHA-256 của mật khẩu (Mặc định hiện tại là: nlinh2026)
-    // Người lạ có F12 xem code cũng chỉ thấy chuỗi mã hóa này chứ không biết mật khẩu thật
-    const PASSWORD_HASH = 'a732f5e6e883d398916d915d87e5e0738b9676b2c2a96a7188022d04e050a5f0';
 
     const loginSection = document.getElementById('loginSection');
     const studioPanel = document.getElementById('studioPanel');
@@ -363,15 +359,7 @@
     let allArts = [];
     let currentFilter = 'all';
 
-    // Hàm băm SHA-256
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Hiện / Ẩn mật khẩu khi bấm icon con mắt
+    // Bấm icon con mắt để xem/ẩn mật khẩu
     togglePwBtn.addEventListener('click', () => {
       if (pwInput.type === 'password') {
         pwInput.type = 'text';
@@ -382,13 +370,10 @@
       }
     });
 
-    // Kiểm tra đăng nhập
-    async function handleLogin() {
+    // Kiểm tra mật khẩu
+    function handleLogin() {
       const entered = pwInput.value.trim();
-      if (!entered) return;
-
-      const hashedInput = await sha256(entered);
-      if (hashedInput === PASSWORD_HASH) {
+      if (entered === ADMIN_PASSWORD) {
         sessionStorage.setItem('nlinh_studio_unlocked', 'true');
         unlockStudio();
       } else {
@@ -412,9 +397,8 @@
       loginSection.style.display = 'none';
       errorMsg.style.display = 'none';
       studioPanel.style.display = 'block';
-      subText.textContent = 'Chọn mục e thích và tải tranh lên  nha  ♡';
+      subText.textContent = 'Chọn mục và tải tranh lên — Tự động đồng bộ trên mọi thiết bị ♡';
 
-      // Chỉ khởi tạo Cloudinary Widget sau khi đã mở khóa
       if (!myWidget) {
         myWidget = cloudinary.createUploadWidget({
           cloudName: CLOUD_NAME,
@@ -434,7 +418,7 @@
             renderAdminGrid();
 
             statusMsg.style.display = 'block';
-            statusMsg.textContent = '✨ Đã tải ảnh lên thành công! Chờ 15-30s nha vợ  ♡';
+            statusMsg.textContent = '✨ Đã tải ảnh lên thành công! Chờ 15-30s để đồng bộ sang các máy khác nhé ♡';
           }
         });
       }
@@ -442,7 +426,6 @@
       fetchCloudArts();
     }
 
-    // Tự động mở nếu trong phiên trình duyệt này đã nhập đúng mật khẩu
     if (sessionStorage.getItem('nlinh_studio_unlocked') === 'true') {
       unlockStudio();
     }
@@ -461,7 +444,7 @@
       try {
         const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json?_t=${Date.now()}`);
         if (!res.ok) {
-          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào dc chọn aaaa ♡</div>';
+          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trên Cloudinary (Hãy tải lên bức tranh đầu tiên nhé!) ♡</div>';
           return;
         }
         const data = await res.json();
@@ -477,7 +460,7 @@
           renderAdminGrid();
         }
       } catch (err) {
-        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào được tải lên nìiiii :Đ</div>';
+        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào được tải lên ♡</div>';
       }
     }
 
@@ -488,7 +471,7 @@
         : allArts.filter(a => a.category === currentFilter);
 
       if (filtered.length === 0) {
-        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trong mục này :v</div>';
+        adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trong mục này ♡</div>';
         return;
       }
 
