@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const CLOUD_NAME = 'o6quhhtx';
 
   /* ==========================================
@@ -60,55 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================
      2. LOAD TRANH ĐỒNG BỘ TRÊN MỌI THIẾT BỊ
   ========================================== */
-  const categoryContainers = {
-    chibi: document.querySelector('#gallery .gallery-block:nth-of-type(1) .gallery-grid, #gallery .gallery-block:nth-of-type(2) .gallery-grid'),
-    head: document.querySelector('#gallery .gallery-block:nth-of-type(2) .gallery-grid, #gallery .gallery-block:nth-of-type(3) .gallery-grid'),
-    half: document.querySelector('#gallery .gallery-block:nth-of-type(3) .gallery-grid, #gallery .gallery-block:nth-of-type(4) .gallery-grid'),
-    full: document.querySelector('#gallery .gallery-block:nth-of-type(4) .gallery-grid, #gallery .gallery-block:nth-of-type(5) .gallery-grid'),
-    couple: document.querySelector('#gallery .gallery-block:nth-of-type(5) .gallery-grid, #gallery .gallery-block:nth-of-type(6) .gallery-grid')
-  };
-
-  async function loadArtworks() {
-    // 1. Kiểm tra cache máy hiện tại
-    const localData = JSON.parse(localStorage.getItem('nlinh_gallery_data') || '[]');
-
-    if (localData.length > 0) {
-      renderImages(localData);
-    } else {
-      // 2. Nếu ở thiết bị khác (điện thoại), kéo trực tiếp toàn bộ ảnh từ Cloudinary
-      try {
-        const listUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json`;
-        const res = await fetch(listUrl);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.resources && data.resources.length > 0) {
-            // Chuẩn hóa dữ liệu theo format web
-            const cloudArts = data.resources.map(r => {
-              // Tìm category từ tags (ví dụ: chibi, head, half...)
-              const catTag = (r.context && r.context.custom && r.context.custom.category) || 'chibi';
-              return {
-                id: r.public_id,
-                url: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto/${r.public_id}.${r.format}`,
-                category: catTag,
-                version: r.version
-              };
-            });
-            renderImages(cloudArts);
-          }
-        }
-      } catch (err) {
-        console.log("Waiting for images sync...");
-      }
-    }
-  }
-
   function renderImages(artsList) {
     const categories = ['chibi', 'head', 'half', 'full', 'couple'];
+    const blocks = document.querySelectorAll('#gallery .gallery-block');
+
     categories.forEach(cat => {
       const catArts = artsList.filter(item => item.category === cat);
-      // Tìm đúng container theo class hoặc title
-      const blocks = document.querySelectorAll('#gallery .gallery-block');
       let targetContainer = null;
+
       blocks.forEach(b => {
         const titleText = b.querySelector('.gallery-title')?.textContent.toLowerCase() || '';
         if (titleText.includes(cat)) {
@@ -118,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (targetContainer) {
         targetContainer.innerHTML = '';
-        // Duyệt theo thứ tự trái qua phải
         catArts.forEach(item => {
           const img = document.createElement('img');
           img.src = item.url;
@@ -132,10 +89,48 @@ document.addEventListener("DOMContentLoaded", () => {
     attachLightboxEvents();
   }
 
+  async function loadArtworks() {
+    // 1. Nếu có dữ liệu trong GLOBAL_GALLERY_DATA (chạy tốt trên cả điện thoại)
+    if (window.GLOBAL_GALLERY_DATA && window.GLOBAL_GALLERY_DATA.length > 0) {
+      renderImages(window.GLOBAL_GALLERY_DATA);
+      return;
+    }
+
+    // 2. Kiểm tra bộ nhớ cục bộ trên máy hiện tại
+    const localData = JSON.parse(localStorage.getItem('nlinh_gallery_data') || '[]');
+    if (localData.length > 0) {
+      renderImages(localData);
+      return;
+    }
+
+    // 3. Fallback kéo từ Cloudinary nếu được cấp quyền Client Resource List
+    try {
+      const listUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json`;
+      const res = await fetch(listUrl);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.resources && data.resources.length > 0) {
+          const cloudArts = data.resources.map(r => {
+            const catTag = (r.context && r.context.custom && r.context.custom.category) || 'chibi';
+            return {
+              id: r.public_id,
+              url: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto/${r.public_id}.${r.format}`,
+              category: catTag,
+              version: r.version
+            };
+          });
+          renderImages(cloudArts);
+        }
+      }
+    } catch (err) {
+      console.log("No cloud sync list available.");
+    }
+  }
+
   loadArtworks();
 
   /* =========================================================
-     ✨ HIỆU ỨNG RÊ CHUỘT BỤI SAO (Tự tắt trên màn cảm ứng)
+     ✨ HIỆU ỨNG RÊ CHUỘT BỤI SAO
   ========================================================= */
   const sparkSymbols = ['✦', '✧', '♡', '⋆', '🌸'];
   const sparkColors = ['#f6a5b9', '#d87093', '#ffcad4', '#e2a3c7', '#ffd6e0'];
@@ -160,5 +155,4 @@ document.addEventListener("DOMContentLoaded", () => {
       span.remove();
     }, 750);
   });
-
-})
+});
