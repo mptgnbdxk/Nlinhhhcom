@@ -1,0 +1,542 @@
+/* =========================================================
+   TOS PAGE — CLEAN CSS
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #efa8bb;
+    --pink-dark: #b86179;
+    --pink-soft: #fff0f4;
+
+    --paper: #fffaf3;
+    --background: #fff8fa;
+
+    --ink: #69414b;
+    --muted: #9a737d;
+    --line: #e6c9cf;
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--ink);
+
+    font-family: "DM Sans", Arial, sans-serif;
+}
+
+/* subtle background texture */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.18;
+
+    background:
+        radial-gradient(circle at 10% 10%,
+            #ffdce5 0 1px,
+            transparent 2px) 0 0 / 32px 32px,
+
+        radial-gradient(circle at 80% 60%,
+            #ffdce5 0 1px,
+            transparent 2px) 0 0 / 38px 38px;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 5vw;
+
+    background: rgba(255, 250, 251, 0.88);
+
+    border-bottom: 1px solid #f1dce2;
+
+    backdrop-filter: blur(15px);
+}
+
+.back {
+    color: #9b6574;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    transition: color 0.2s ease;
+}
+
+.back:hover {
+    color: #d27f96;
+}
+
+.top-title {
+    color: #a96a7b;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main {
+    padding: 75px 4vw 90px;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro {
+    margin-bottom: 55px;
+
+    text-align: center;
+}
+
+.intro>span {
+    color: #cb8194;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+}
+
+.intro h1 {
+    margin: 13px 0 8px;
+
+    color: #693c48;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(45px, 6vw, 78px);
+
+    line-height: 1;
+}
+
+.intro h1 i {
+    color: #e28ca2;
+
+    font-style: normal;
+}
+
+.intro p {
+    margin: 0;
+
+    color: #9d7982;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   TOS BOOK
+========================================================= */
+
+.tos-book {
+    max-width: 1500px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 17px;
+
+    align-items: start;
+}
+
+/* =========================================================
+   PAPER
+========================================================= */
+
+.paper {
+    position: relative;
+
+    min-width: 0;
+    min-height: 650px;
+
+    overflow: hidden;
+
+    padding: 22px 17px 34px 23px;
+
+    background: var(--paper);
+
+    border: 1px solid #efd9dd;
+
+    border-radius: 3px 3px 15px 15px;
+
+    box-shadow:
+        0 20px 50px rgba(157, 91, 109, 0.12);
+}
+
+/* =========================================================
+   PINK LACE
+========================================================= */
+
+.lace {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 13px;
+
+    z-index: 4;
+
+    background:
+        radial-gradient(circle at 100% 7px,
+            transparent 0 6.5px,
+            #f5b1c1 7px 8px,
+            transparent 8.5px) 0 0 / 13px 22px repeat-y;
+}
+
+/* =========================================================
+   PAPER GRID
+========================================================= */
+
+.paper::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 60px;
+    bottom: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    opacity: 0.5;
+
+    background-image:
+        linear-gradient(#e9ded7 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            #e9ded7 1px,
+            transparent 1px);
+
+    background-size: 23px 23px;
+}
+
+/* =========================================================
+   PAPER CONTENT
+========================================================= */
+
+.paper-heading,
+.paper-columns,
+.single-rule,
+.cute-note,
+.page {
+    position: relative;
+
+    z-index: 2;
+}
+
+/* =========================================================
+   PAPER HEADING
+========================================================= */
+
+.paper-heading {
+    margin-bottom: 26px;
+
+    text-align: center;
+}
+
+.mini-title {
+    margin-bottom: 12px;
+
+    color: #a1576c;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+.tos-label {
+    width: max-content;
+
+    margin: auto;
+
+    padding: 5px 23px;
+
+    color: #d27b91;
+
+    background: #fff0f3;
+
+    border: 1px solid #edb9c5;
+
+    border-radius: 7px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   TWO COLUMNS
+========================================================= */
+
+.paper-columns {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 11px;
+}
+
+.divider {
+    padding-left: 11px;
+
+    border-left: 1px solid #c98696;
+}
+
+/* =========================================================
+   RULES
+========================================================= */
+
+.rule {
+    margin-bottom: 24px;
+}
+
+.rule h2,
+.single-rule h2 {
+    margin: 0 0 8px;
+
+    color: #713f4b;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 14px;
+
+    line-height: 1.25;
+}
+
+.rule ul,
+.single-rule ul {
+    margin: 0;
+
+    padding-left: 13px;
+
+    color: #795b64;
+
+    font-size: 8.5px;
+
+    line-height: 1.62;
+}
+
+.rule li,
+.single-rule li {
+    margin-bottom: 5px;
+}
+
+/* =========================================================
+   SINGLE RULE
+========================================================= */
+
+.single-rule {
+    padding: 5px 8px;
+}
+
+.single-rule h2 {
+    margin-bottom: 14px;
+
+    font-size: 19px;
+}
+
+.single-rule ul {
+    font-size: 10px;
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   CUTE NOTE
+========================================================= */
+
+.cute-note {
+    width: max-content;
+
+    max-width: 90%;
+
+    margin: 50px auto 0;
+
+    padding: 12px 16px;
+
+    color: #c8788d;
+
+    background: #fff0f4;
+
+    border: 1px solid #efc5ce;
+
+    border-radius: 999px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+.cute-note span {
+    margin: 0 5px;
+
+    color: #e28da2;
+}
+
+/* =========================================================
+   PAGE NUMBER
+========================================================= */
+
+.page {
+    position: absolute;
+
+    left: 50%;
+    bottom: 10px;
+
+    transform: translateX(-50%);
+
+    color: #d396a5;
+
+    font-size: 8px;
+
+    letter-spacing: 0.16em;
+}
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.bottom {
+    max-width: 1500px;
+
+    margin: 35px auto 0;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    color: #ae8992;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.12em;
+}
+
+.bottom a {
+    color: #b9687c;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.bottom a:hover {
+    color: #e18ca1;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .tos-book {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .paper {
+        min-height: 620px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .top {
+        padding: 0 18px;
+    }
+
+    .top-title {
+        display: none;
+    }
+
+    main {
+        padding: 55px 14px 70px;
+    }
+
+    .intro {
+        margin-bottom: 38px;
+    }
+
+    .tos-book {
+        grid-template-columns: 1fr;
+
+        max-width: 520px;
+    }
+
+    .paper {
+        min-height: auto;
+
+        padding-bottom: 40px;
+    }
+
+    .rule ul,
+    .single-rule ul {
+        font-size: 10px;
+    }
+
+    .bottom {
+        padding: 0 8px;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+}
