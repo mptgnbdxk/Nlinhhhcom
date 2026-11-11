@@ -16,6 +16,7 @@
       --card-bg: #ffffff;
       --ink: #5a4b51;
       --sub: #9b858d;
+      --danger: #e76f51;
       --border: #f6ccd6;
     }
 
@@ -65,6 +66,62 @@
       margin-bottom: 24px;
     }
 
+    /* KHUNG ĐĂNG NHẬP */
+    .login-box {
+      max-width: 340px;
+      margin: 0 auto 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 12px 42px 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #ecd5db;
+      font-size: 15px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--pink);
+    }
+
+    .toggle-pw-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--pink);
+      font-size: 16px;
+      padding: 4px;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* KHU VỰC QUẢN LÝ (ẨN KHI CHƯA LOGIN) */
+    #studioPanel {
+      display: none;
+    }
+
     .upload-toolbar {
       background: #fff5f7;
       border: 1.5px dashed #f1b3c3;
@@ -107,6 +164,22 @@
     .btn-main:hover {
       transform: translateY(-2px);
       background: #c96083;
+    }
+
+    .btn-logout {
+      padding: 8px 16px;
+      background: #f8e8ee;
+      color: var(--ink);
+      border: none;
+      border-radius: 999px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-logout:hover {
+      background: #f1d4df;
     }
 
     .status-msg {
@@ -190,7 +263,11 @@
     }
 
     .links-footer {
-      margin-top: 16px;
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      align-items: center;
     }
     .links-footer a {
       color: var(--sub);
@@ -209,34 +286,49 @@
     <div class="card">
       <div class="badge">🌸 artist studio</div>
       <h1>Góc Quản Lý Tranh Của Nlinh</h1>
-      <p class="subtitle">Chọn mục và tải tranh lên — Tự động đồng bộ trên mọi điện thoại & máy tính ♡</p>
+      <p class="subtitle" id="subText">Vui lòng nhập mật khẩu để mở khóa phòng tranh ♡</p>
 
-      <div class="upload-toolbar">
-        <label for="categorySelect" style="font-weight: 700; font-size: 0.9rem;">Danh mục:</label>
-        <select id="categorySelect">
-          <option value="chibi">Chibi Portrait</option>
-          <option value="head">Head Shots</option>
-          <option value="half">Half Body</option>
-          <option value="full">Full Body</option>
-          <option value="couple">Couple</option>
-        </select>
-
-        <button type="button" class="btn-main" id="uploadBtn">🌸 Chọn ảnh tải lên</button>
+      <!-- MÀN HÌNH KHÓA MẬT KHẨU -->
+      <div class="login-box" id="loginSection">
+        <div class="input-wrapper">
+          <input type="password" id="pwInput" placeholder="Nhập mật khẩu bí mật..." autocomplete="off">
+          <button type="button" class="toggle-pw-btn" id="togglePwBtn" title="Hiện/Ẩn mật khẩu">👁️</button>
+        </div>
+        <div class="error-msg" id="errorMsg">Mật khẩu chưa đúng rồi, thử lại nhé!</div>
+        <button type="button" class="btn-main" id="loginBtn">🔒 Mở khóa Studio</button>
       </div>
 
-      <div id="statusMsg" class="status-msg"></div>
+      <!-- GIAO DIỆN QUẢN LÝ (CHỈ HIỆN KHI ĐÚNG MẬT KHẨU) -->
+      <div id="studioPanel">
+        <div class="upload-toolbar">
+          <label for="categorySelect" style="font-weight: 700; font-size: 0.9rem;">Danh mục:</label>
+          <select id="categorySelect">
+            <option value="chibi">Chibi Portrait</option>
+            <option value="head">Head Shots</option>
+            <option value="half">Half Body</option>
+            <option value="full">Full Body</option>
+            <option value="couple">Couple</option>
+          </select>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-filter="all">Tất cả</button>
-        <button class="tab-btn" data-filter="chibi">Chibi</button>
-        <button class="tab-btn" data-filter="head">Head</button>
-        <button class="tab-btn" data-filter="half">Half</button>
-        <button class="tab-btn" data-filter="full">Full</button>
-        <button class="tab-btn" data-filter="couple">Couple</button>
-      </div>
+          <button type="button" class="btn-main" id="uploadBtn">🌸 Chọn ảnh tải lên</button>
+        </div>
 
-      <div class="grid" id="adminGrid">
-        <div class="empty-note">Đang tải danh sách tranh từ Cloudinary...</div>
+        <div id="statusMsg" class="status-msg"></div>
+
+        <div class="tabs">
+          <button class="tab-btn active" data-filter="all">Tất cả</button>
+          <button class="tab-btn" data-filter="chibi">Chibi</button>
+          <button class="tab-btn" data-filter="head">Head</button>
+          <button class="tab-btn" data-filter="half">Half</button>
+          <button class="tab-btn" data-filter="full">Full</button>
+          <button class="tab-btn" data-filter="couple">Couple</button>
+        </div>
+
+        <div class="grid" id="adminGrid">
+          <div class="empty-note">Đang tải danh sách tranh từ Cloudinary...</div>
+        </div>
+
+        <button type="button" class="btn-logout" id="logoutBtn">Đăng xuất khóa lại</button>
       </div>
 
       <div class="links-footer">
@@ -247,44 +339,117 @@
 
   <script>
     const CLOUD_NAME = 'o6quhhtx';
-    // LƯU Ý: Điền đúng tên Upload Preset Unsigned trên Cloudinary của bạn ('nlinh_art' hoặc 'nlinh_preset')
     const UPLOAD_PRESET = 'nlinh_art';
+
+    // Mã băm SHA-256 của mật khẩu (Mặc định hiện tại là: nlinh2026)
+    // Người lạ có F12 xem code cũng chỉ thấy chuỗi mã hóa này chứ không biết mật khẩu thật
+    const PASSWORD_HASH = 'a732f5e6e883d398916d915d87e5e0738b9676b2c2a96a7188022d04e050a5f0';
+
+    const loginSection = document.getElementById('loginSection');
+    const studioPanel = document.getElementById('studioPanel');
+    const pwInput = document.getElementById('pwInput');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const subText = document.getElementById('subText');
+    const togglePwBtn = document.getElementById('togglePwBtn');
 
     const uploadBtn = document.getElementById('uploadBtn');
     const statusMsg = document.getElementById('statusMsg');
     const categorySelect = document.getElementById('categorySelect');
     const adminGrid = document.getElementById('adminGrid');
 
+    let myWidget = null;
     let allArts = [];
     let currentFilter = 'all';
 
-    // Khởi tạo Widget Cloudinary
-    const myWidget = cloudinary.createUploadWidget({
-      cloudName: CLOUD_NAME,
-      uploadPreset: UPLOAD_PRESET,
-      sources: ['local', 'camera', 'url'],
-      clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp', 'gif']
-    }, (error, result) => {
-      if (!error && result && result.event === "success") {
-        const selectedCat = categorySelect.value;
-        const newArt = {
-          id: result.info.public_id,
-          url: result.info.secure_url,
-          category: selectedCat
-        };
+    // Hàm băm SHA-256
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-        // Thêm ngay vào đầu danh sách hiển thị
-        allArts.unshift(newArt);
-        renderAdminGrid();
-
-        statusMsg.style.display = 'block';
-        statusMsg.textContent = '✨ Đã tải ảnh lên thành công!(Lưu ý: Cloudinary có thể mất khoảng 10-30 giây để cập nhật danh sách đồng bộ sang các máy khác) ♡';
+    // Hiện / Ẩn mật khẩu khi bấm icon con mắt
+    togglePwBtn.addEventListener('click', () => {
+      if (pwInput.type === 'password') {
+        pwInput.type = 'text';
+        togglePwBtn.textContent = '🙈';
+      } else {
+        pwInput.type = 'password';
+        togglePwBtn.textContent = '👁️';
       }
     });
 
+    // Kiểm tra đăng nhập
+    async function handleLogin() {
+      const entered = pwInput.value.trim();
+      if (!entered) return;
+
+      const hashedInput = await sha256(entered);
+      if (hashedInput === PASSWORD_HASH) {
+        sessionStorage.setItem('nlinh_studio_unlocked', 'true');
+        unlockStudio();
+      } else {
+        errorMsg.style.display = 'block';
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    }
+
+    loginBtn.addEventListener('click', handleLogin);
+    pwInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('nlinh_studio_unlocked');
+      location.reload();
+    });
+
+    function unlockStudio() {
+      loginSection.style.display = 'none';
+      errorMsg.style.display = 'none';
+      studioPanel.style.display = 'block';
+      subText.textContent = 'Chọn mục và tải tranh lên — Tự động đồng bộ trên mọi thiết bị ♡';
+
+      // Chỉ khởi tạo Cloudinary Widget sau khi đã mở khóa
+      if (!myWidget) {
+        myWidget = cloudinary.createUploadWidget({
+          cloudName: CLOUD_NAME,
+          uploadPreset: UPLOAD_PRESET,
+          sources: ['local', 'camera', 'url'],
+          clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp', 'gif']
+        }, (error, result) => {
+          if (!error && result && result.event === "success") {
+            const selectedCat = categorySelect.value;
+            const newArt = {
+              id: result.info.public_id,
+              url: result.info.secure_url,
+              category: selectedCat
+            };
+
+            allArts.unshift(newArt);
+            renderAdminGrid();
+
+            statusMsg.style.display = 'block';
+            statusMsg.textContent = '✨ Đã tải ảnh lên thành công! Chờ 15-30s để đồng bộ sang các máy khác nhé ♡';
+          }
+        });
+      }
+
+      fetchCloudArts();
+    }
+
+    // Tự động mở nếu trong phiên trình duyệt này đã nhập đúng mật khẩu
+    if (sessionStorage.getItem('nlinh_studio_unlocked') === 'true') {
+      unlockStudio();
+    }
+
     uploadBtn.addEventListener('click', () => {
+      if (!myWidget) return;
       const selectedCat = categorySelect.value;
-      // Gắn cả tag chung 'commission_art', tag mục riêng và context.custom.category để đồng bộ 100%
       myWidget.update({
         tags: ['commission_art', selectedCat],
         context: { category: selectedCat }
@@ -292,12 +457,11 @@
       myWidget.open();
     });
 
-    // Hàm tải danh sách tranh đang có trên Cloudinary
     async function fetchCloudArts() {
       try {
         const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/commission_art.json?_t=${Date.now()}`);
         if (!res.ok) {
-          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trên Cloudinary (Hãy bấm nút tải lên bức tranh đầu tiên nhé!) ♡</div>';
+          adminGrid.innerHTML = '<div class="empty-note">Chưa có tranh nào trên Cloudinary (Hãy tải lên bức tranh đầu tiên nhé!) ♡</div>';
           return;
         }
         const data = await res.json();
@@ -339,7 +503,6 @@
       });
     }
 
-    // Chuyển tab lọc
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -348,8 +511,6 @@
         renderAdminGrid();
       });
     });
-
-    fetchCloudArts();
   </script>
 </body>
 </html>
